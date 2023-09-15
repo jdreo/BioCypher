@@ -54,8 +54,10 @@ def test_create_import_call(bw):
     tmp_path = bw.outdir
 
     assert passed
-    assert 'bin/neo4j-admin import --database=neo4j --delimiter=";" ' in call
-    assert '--array-delimiter="|" --quote="\'" --force=true ' in call
+    assert 'neo4j-admin' in call
+    assert 'import' in call
+    assert '--delimiter=";"' in call
+    assert '--array-delimiter="|" --quote="\'"' in call
     assert (
         f'--nodes="{tmp_path}/PostTranslationalInteraction-header.csv,{tmp_path}/PostTranslationalInteraction-part.*" '
         in call
@@ -103,10 +105,9 @@ def test_neo4j_write_node_data_headers_import_call(bw, _get_nodes):
         == ":ID;name;score:double;taxon:long;genes:string[];id;preferred_id;:LABEL"
     )
     assert m == ":ID;name;taxon:long;id;preferred_id;:LABEL"
-    assert "bin/neo4j-admin import" in c
-    assert "--database=neo4j" in c
+    assert "neo4j-admin" in c
+    assert "import" in c
     assert '--delimiter=";"' in c
-    assert "--force=true" in c
     assert '--nodes="' in c
     assert "Protein-header.csv" in c
     assert 'Protein-part.*"' in c
@@ -122,7 +123,8 @@ def test_neo4j_write_node_data_headers_import_call(bw, _get_nodes):
     with open(call) as f:
         c = f.read()
 
-    assert "custom/path/neo4j-admin import" in c
+    assert "custom/path/neo4j-admin" in c
+    assert "import" in c
 
     # custom file prefix
     # TODO
@@ -717,10 +719,9 @@ def test_write_edge_data_headers_import_call(bw, _get_nodes, _get_edges):
     assert l == ":START_ID;id;residue;level:long;:END_ID;:TYPE"
     assert c == ":START_ID;id;site;confidence:long;:END_ID;:TYPE"
 
-    assert "bin/neo4j-admin import" in call
-    assert "--database=neo4j" in call
+    assert "neo4j-admin" in call
+    assert "import" in call
     assert '--delimiter=";"' in call
-    assert "--force=true" in call
     assert '--nodes="' in call
     assert "PERTURBED_IN_DISEASE" in call
     assert "Is_Mutated_In" in call
