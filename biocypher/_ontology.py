@@ -14,6 +14,7 @@ and representation of single ontologies as well as their hybridisation and
 other advanced operations.
 """
 import os
+import sys
 
 from ._logger import logger
 
@@ -515,13 +516,13 @@ class Ontology:
 
     def show_ontology_structure(self, to_disk: str = None, full: bool = False):
         """
-        Show the ontology structure using treelib or write to GRAPHML file.
+        Print the ontology structure using treelib, on stderr, or write to GRAPHML file.
 
         Args:
 
             to_disk (str): If specified, the ontology structure will be saved
                 to disk as a GRAPHML file, to be opened in your favourite
-                graph visualisation tool.
+                graph visualisation tool. Else, it is printed on stderr.
 
             full (bool): If True, the full ontology structure will be shown,
                 including all nodes and edges. If False, only the nodes and
@@ -537,7 +538,7 @@ class Ontology:
         else:
             msg = f"Showing ontology structure based on {len(self._tail_ontology_meta)+1} ontologies: "
 
-        print(msg)
+        print(msg, file=sys.stderr)
 
         if not full:
             # set of leaves and their intermediate parents up to the root
@@ -566,7 +567,7 @@ class Ontology:
                         f"{self.mapping.extended_schema[node].get('synonym_for')}"
                     )
 
-            tree.show()
+            print(tree, file=sys.stderr)
 
             return tree
 
